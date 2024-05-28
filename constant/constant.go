@@ -13,12 +13,8 @@ var (
 func GetPath() *core.InternalApi {
 	once.Do(func() {
 		instance = &core.InternalApi{
-			Patient: core.PatientPath{
-				GetPatient:    "/patient",
-				GetPatients:   "/patient/list",
-				CreatePatient: "/patient",
-				UpdatePatient: "/patient",
-				DeletePatient: "/patient",
+			Location: core.LocationPath{
+				FindEvent: "/histories",
 			},
 		}
 	})

@@ -9,7 +9,7 @@ import (
 )
 
 type handler interface {
-	GetPatient(c *fiber.Ctx) error
+	FindEvent(c *fiber.Ctx) error
 }
 
 type locationHandler struct {
@@ -22,7 +22,7 @@ func NewLocationHandler() handler {
 	}
 }
 
-func (h *locationHandler) GetPatient(c *fiber.Ctx) error {
+func (h *locationHandler) FindEvent(c *fiber.Ctx) error {
 	ctx := fiberkit.FiberKit{C: c}
 	req := new(resource.GetPatientRequest)
 	ctx.C.QueryParser(req)

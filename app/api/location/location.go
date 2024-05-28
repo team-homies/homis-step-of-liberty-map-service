@@ -10,6 +10,6 @@ import (
 func SetlocationApis(route fiber.Router) {
 	h := handler.NewLocationHandler()
 	// 환자 리스트 조회
-	route.Get(constant.GetPath().Patient.GetPatient, h.GetPatient)
+	route.Get(constant.GetPath().Location.FindEvent, h.FindEvent)
 
 }
