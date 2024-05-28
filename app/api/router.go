@@ -1,12 +1,12 @@
 package api
 
 import (
-	patient "main/app/api/map"
+	location "main/app/api/location"
 
 	"github.com/gofiber/fiber/v2"
 )
 
 func InitRoutes(app *fiber.App) {
-	mapGroup := app.Group("/map")
-	patient.SetMapApis(mapGroup)
+	locationGroup := app.Group("/map")
+	location.SetlocationApis(locationGroup)
 }

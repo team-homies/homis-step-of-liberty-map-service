@@ -1,8 +1,8 @@
 package handler
 
 import (
-	"main/app/api/map/resource"
-	"main/app/api/map/service"
+	"main/app/api/location/resource"
+	"main/app/api/location/service"
 	"main/common/fiberkit"
 
 	"github.com/gofiber/fiber/v2"
@@ -12,17 +12,17 @@ type handler interface {
 	GetPatient(c *fiber.Ctx) error
 }
 
-type mapHandler struct {
-	service service.MapService
+type locationHandler struct {
+	service service.LocationService
 }
 
-func NewMapHandler() handler {
-	return &mapHandler{
-		service: service.NewMapService(),
+func NewLocationHandler() handler {
+	return &locationHandler{
+		service: service.NewLocationService(),
 	}
 }
 
-func (h *mapHandler) GetPatient(c *fiber.Ctx) error {
+func (h *locationHandler) GetPatient(c *fiber.Ctx) error {
 	ctx := fiberkit.FiberKit{C: c}
 	req := new(resource.GetPatientRequest)
 	ctx.C.QueryParser(req)
