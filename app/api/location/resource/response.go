@@ -1,9 +1,8 @@
 package resource
 
-type GetPatientResponse struct {
-	Patient locationResource `json:"patient"`
-}
-
-type GetPatientsResponse struct {
-	Patients []locationResource `json:"patients"`
+type FindEventResponse struct {
+	Id        uint   `json:"id"`
+	Latitude  string `json:"latitude"`
+	Longitude string `json:"longitude"`
+	IsCollect bool   `json:"is_collect"`
 }
