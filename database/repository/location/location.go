@@ -8,7 +8,7 @@ import (
 
 type LocationRepository interface {
 	FindEventByLocation(Id uint) (*entity.Map, error)
-	FindDexById(Id uint) (*entity.Map, error)
+	FindDexById(Id uint) (res uint, err error)
 }
 
 type gormLocationRepository struct {
@@ -39,6 +39,13 @@ func (g *gormLocationRepository) FindEventByLocation(Id uint) (res *entity.Map, 
 }
 
 // 사건 조회 : isCollect 사건 보유 여부
-func (g *gormLocationRepository) FindDexById(id uint) (*entity.Map, error) {
-	panic("")
+func (g *gormLocationRepository) FindDexById(userId uint) (res uint, err error) {
+	var collectCount int64
+	tx := g.db
+	err = tx.Model(&entity.Map{}).Count(&collectCount).Error
+	if err != nil {
+		return
+	}
+
+	return
 }

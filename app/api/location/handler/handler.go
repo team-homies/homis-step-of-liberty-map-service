@@ -1,9 +1,7 @@
 package handler
 
 import (
-	"main/app/api/location/resource"
 	"main/app/api/location/service"
-	"main/common/fiberkit"
 
 	"github.com/gofiber/fiber/v2"
 )
@@ -22,14 +20,16 @@ func NewLocationHandler() handler {
 	}
 }
 
-func (h *locationHandler) FindEvent(c *fiber.Ctx) error {
-	ctx := fiberkit.FiberKit{C: c}
-	req := new(resource.FindEventRequest)
-	ctx.C.QueryParser(req)
+func (h *locationHandler) FindEvent(c *fiber.Ctx) error
 
-	res, err := h.service.GetPatient(req)
-	if err != nil {
-		return ctx.HttpFail(err.Error(), fiber.StatusNotFound)
-	}
-	return ctx.HttpOK(res)
-}
+// {
+// ctx := fiberkit.FiberKit{C: c}
+// req := new(resource.FindEventRequest)
+// ctx.C.QueryParser(req)
+
+// res, err := h.service.FindEvent(req)
+// if err != nil {
+// 	return ctx.HttpFail(err.Error(), fiber.StatusNotFound)
+// }
+// return ctx.HttpOK(res)
+// }
