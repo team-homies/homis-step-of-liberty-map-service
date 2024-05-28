@@ -18,5 +18,6 @@ func InitFiber() *fiber.App {
 
 func InitGrpc() *grpc.Server {
 	grpcServer := grpc.NewServer()
+	// g.RegisterServices(grpcServer)
 	return grpcServer
 }

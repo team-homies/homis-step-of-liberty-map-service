@@ -1,6 +1,6 @@
 package resource
 
-type PatientResource struct {
+type MapResource struct {
 	Id         uint64 `json:"id"`
 	Name       string `json:"name"`
 	Age        int    `json:"age"`

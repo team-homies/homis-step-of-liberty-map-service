@@ -2,11 +2,11 @@ package repository
 
 import (
 	"main/database"
-	"main/database/repository/patient"
+	patient "main/database/repository/map"
 )
 
 type Repository interface {
-	patient.PatientRepository
+	patient.MapRepository
 }
 
 func NewRepository() Repository {
@@ -17,5 +17,5 @@ func NewRepository() Repository {
 }
 
 type repository struct {
-	patient.PatientRepository
+	patient.MapRepository
 }

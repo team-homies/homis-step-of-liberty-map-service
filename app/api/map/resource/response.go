@@ -1,9 +1,9 @@
 package resource
 
 type GetPatientResponse struct {
-	Patient PatientResource `json:"patient"`
+	Patient MapResource `json:"patient"`
 }
 
 type GetPatientsResponse struct {
-	Patients []PatientResource `json:"patients"`
+	Patients []MapResource `json:"patients"`
 }
