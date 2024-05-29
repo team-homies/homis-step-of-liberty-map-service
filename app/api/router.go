@@ -8,5 +8,5 @@ import (
 
 func InitRoutes(app *fiber.App) {
 	locationGroup := app.Group("/map")
-	location.SetlocationApis(locationGroup)
+	location.SetLocationApis(locationGroup)
 }

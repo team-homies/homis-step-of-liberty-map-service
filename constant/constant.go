@@ -10,7 +10,7 @@ var (
 	once     sync.Once
 )
 
-func GetPath() *core.InternalApi {
+func LocationPath() *core.InternalApi {
 	once.Do(func() {
 		instance = &core.InternalApi{
 			Location: core.LocationPath{
