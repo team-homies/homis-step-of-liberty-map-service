@@ -6,7 +6,7 @@ import (
 )
 
 type LocationService interface {
-	FindEvent(req *resource.FindEventRequest, userId uint) (res *resource.FindEventResponse, err error)
+	FindEvent(userId uint, req *resource.FindEventRequest) (res *resource.FindEventResponse, err error)
 }
 
 func NewLocationService() LocationService {
@@ -19,7 +19,7 @@ type locationService struct {
 	LocationService
 }
 
-func (s *locationService) FindEvent(req *resource.FindEventRequest, userId uint) (res *resource.FindEventResponse, err error) {
+func (s *locationService) FindEvent(userId uint, req *resource.FindEventRequest) (res *resource.FindEventResponse, err error) {
 	locationRepository := repository.NewRepository()
 
 	// 1. isCollect 참거짓 구분
@@ -29,13 +29,16 @@ func (s *locationService) FindEvent(req *resource.FindEventRequest, userId uint)
 		return nil, err
 		// 3. 만약 값이 0이면 만들어놓은 레포지토리를 사용해 데이터를 가져온다
 	} else {
-		eventFind, err := locationRepository.FindEventByLocation(req.Id)
+		eventFind, err := locationRepository.FindEventByLocation(req.Latitude, req.Longitude)
 		if err != nil {
 			return nil, err
 		}
 		// 4. 가져온 데이터를 res에 넣는다
 		res = &resource.FindEventResponse{
-			Id: eventFind.ID,
+			Id:        eventFind.ID,
+			Latitude:  eventFind.Latitude,
+			Longitude: eventFind.Longitude,
+			// IsCollect: ,
 		}
 	}
 	return

@@ -1,7 +1,9 @@
 package handler
 
 import (
+	"main/app/api/location/resource"
 	"main/app/api/location/service"
+	"main/common/fiberkit"
 
 	"github.com/gofiber/fiber/v2"
 )
@@ -20,16 +22,30 @@ func NewLocationHandler() handler {
 	}
 }
 
-func (h *locationHandler) FindEvent(c *fiber.Ctx) error
+// 사건 조회 query : latitude longitude , header : userId
+func (h *locationHandler) FindEvent(c *fiber.Ctx) error {
+	ctx := fiberkit.FiberKit{C: c}
+	req := new(resource.FindEventRequest)
 
-// {
-// ctx := fiberkit.FiberKit{C: c}
-// req := new(resource.FindEventRequest)
-// ctx.C.QueryParser(req)
+	// 1. middleware에서 user_id 받기
+	err := ctx.C.BodyParser(req)
+	if err != nil {
+		return ctx.HttpFail(err.Error(), fiber.StatusNotFound)
+	}
+	userId := uint(ctx.GetLocalsInt("user_id"))
 
-// res, err := h.service.FindEvent(req)
-// if err != nil {
-// 	return ctx.HttpFail(err.Error(), fiber.StatusNotFound)
-// }
-// return ctx.HttpOK(res)
-// }
+	// 2. 쿼리파라미터에서 위도경도 받기
+	err = ctx.C.QueryParser(req)
+	if err != nil {
+		return ctx.HttpFail(err.Error(), fiber.StatusNotFound)
+	}
+
+	// 3. 서비스 함수 실행
+	res, err := h.service.FindEvent(userId, req)
+	if err != nil {
+		return ctx.HttpFail(err.Error(), fiber.StatusNotFound)
+	}
+
+	// 4. 리턴
+	return ctx.HttpOK(res)
+}

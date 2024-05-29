@@ -7,7 +7,7 @@ import (
 )
 
 type LocationRepository interface {
-	FindEventByLocation(Id uint) (*entity.Map, error)
+	FindEventByLocation(lati, longi float64) (*entity.Map, error)
 	FindDexById(Id uint) (res uint, err error)
 }
 
@@ -20,7 +20,7 @@ func NewLocationRepository(db *gorm.DB) LocationRepository {
 }
 
 // 사건 조회
-func (g *gormLocationRepository) FindEventByLocation(Id uint) (res *entity.Map, err error) {
+func (g *gormLocationRepository) FindEventByLocation(lati, longi float64) (res *entity.Map, err error) {
 	// 1. 쿼리작성
 	// 	select id, latitude , longitude
 	//   from "map"
@@ -28,7 +28,7 @@ func (g *gormLocationRepository) FindEventByLocation(Id uint) (res *entity.Map, 
 
 	// 2. gorm 적용
 	tx := g.db
-	err = tx.Model(&entity.Map{}).Select("id", "latitude", "longitude").Where("id = ?", Id).First(&res).Error
+	err = tx.Model(&entity.Map{}).Select("id", "latitude", "longitude").Where("latitude = ? AND longitude = ?", lati, longi).First(&res).Error
 
 	if err != nil {
 		return
@@ -42,7 +42,7 @@ func (g *gormLocationRepository) FindEventByLocation(Id uint) (res *entity.Map, 
 func (g *gormLocationRepository) FindDexById(userId uint) (res uint, err error) {
 	var collectCount int64
 	tx := g.db
-	err = tx.Model(&entity.Map{}).Count(&collectCount).Error
+	err = tx.Model(&entity.Map{}).Where("id = ?", userId).Count(&collectCount).Error
 	if err != nil {
 		return
 	}
