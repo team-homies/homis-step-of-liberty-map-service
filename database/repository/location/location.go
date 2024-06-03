@@ -9,6 +9,7 @@ import (
 type LocationRepository interface {
 	FindEventByLocation(lati, longi float64) (*entity.Map, error)
 	FindDexById(Id uint) (res uint, err error)
+	SaveHistories(location []entity.Map) (err error)
 }
 
 type gormLocationRepository struct {
@@ -46,6 +47,17 @@ func (g *gormLocationRepository) FindDexById(userId uint) (res uint, err error) 
 	if err != nil {
 		return
 	}
+
+	return
+}
+
+// 사건 위치 저장
+func (g *gormLocationRepository) SaveHistories(location []entity.Map) (err error) {
+	// 	INSERT
+	//    INTO "map"(name, address, address_road , longitude , latitude)
+	//  VALUES('우림이집', '수원', '세류로39', 127.00711632852955,  37.26275448320069);
+
+	err = g.db.Create(location).Error
 
 	return
 }

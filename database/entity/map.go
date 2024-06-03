@@ -4,6 +4,7 @@ import "gorm.io/gorm"
 
 type Map struct {
 	gorm.Model
+	EventId     uint    `gorm:"column:event_id;not null"`
 	Name        string  `gorm:"column:name;not null"`
 	Address     string  `gorm:"column:address;not null"`
 	AddressRoad string  `gorm:"column:address_road;not null"`
