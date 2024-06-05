@@ -4,6 +4,7 @@ import (
 	"main/app/api/location/resource"
 	"main/app/api/location/service"
 	"main/common/fiberkit"
+	"main/constant/common"
 
 	"github.com/gofiber/fiber/v2"
 )
@@ -39,8 +40,9 @@ func (h *locationHandler) FindEvent(c *fiber.Ctx) error {
 	}
 
 	// 2. middleware에서 user_id 받기
-	userId := uint(ctx.GetLocalsInt("user_id"))
+	userId := uint(ctx.GetLocalsInt(common.LOCALS_USER_ID))
 
+	// userId := uint(12)
 	// 3. 서비스 함수 실행
 	res, err := h.service.FindEvent(userId, req)
 	if err != nil {
