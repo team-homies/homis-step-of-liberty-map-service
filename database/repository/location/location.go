@@ -1,14 +1,14 @@
 package location
 
 import (
+	"main/app/api/common"
 	"main/database/entity"
 
 	"gorm.io/gorm"
 )
 
 type LocationRepository interface {
-	FindEventByLocation(lati, longi float64) (*entity.Map, error)
-	FindDexById(Id uint) (res uint, err error)
+	FindEventByPoint(MaxLatLon, MinLatLon common.Point) (res *entity.Map, err error)
 }
 
 type gormLocationRepository struct {
@@ -20,15 +20,16 @@ func NewLocationRepository(db *gorm.DB) LocationRepository {
 }
 
 // 사건 조회
-func (g *gormLocationRepository) FindEventByLocation(lati, longi float64) (res *entity.Map, err error) {
+func (g *gormLocationRepository) FindEventByPoint(MaxLatLon, MinLatLon common.Point) (res *entity.Map, err error) {
 	// 1. 쿼리작성
 	// 	select id, latitude , longitude
 	//   from "map"
-	//  where id = 1;
+	//  where  latitude BETWEEN 최소위도 AND 최대위도 AND longitude  BETWEEN 최소경도 AND 최대경도
 
 	// 2. gorm 적용
-	tx := g.db
-	err = tx.Model(&entity.Map{}).Select("id", "latitude", "longitude").Where("latitude = ? AND longitude = ?", lati, longi).First(&res).Error
+	err = g.db.Model(&entity.Map{}).Select("id", "latitude", "longitude").
+		Where("latitude BETWEEN ? AND ? AND longitude BETWEEN ? AND ?", MinLatLon.Latitude, MaxLatLon.Latitude, MinLatLon.Longitude, MaxLatLon.Longitude).
+		First(&res).Error
 
 	if err != nil {
 		return
@@ -36,16 +37,4 @@ func (g *gormLocationRepository) FindEventByLocation(lati, longi float64) (res *
 
 	return
 
-}
-
-// 사건 조회 : isCollect 사건 보유 여부
-func (g *gormLocationRepository) FindDexById(userId uint) (res uint, err error) {
-	var collectCount int64
-	tx := g.db
-	err = tx.Model(&entity.Map{}).Where("id = ?", userId).Count(&collectCount).Error
-	if err != nil {
-		return
-	}
-
-	return
 }
