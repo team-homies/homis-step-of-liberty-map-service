@@ -2,17 +2,16 @@ package common
 
 import (
 	"context"
-	"main/app/grpc/proto/dex"
+	"main/app/grpc/proto/iscollect"
 	"main/config"
 	"math"
-	"strconv"
 
 	"github.com/spf13/viper"
 	"google.golang.org/grpc"
 )
 
-// 수집률 grpc
-func GetRateGrpc(userId uint) (result uint64, err error) {
+// isCollect grpc
+func GetIsCollectGrpc(userId uint) (result bool, err error) {
 	// 0. grpc 연동
 	var address string
 	if viper.GetString(config.GRPC_HISTORY_HOST) == "localhost" {
@@ -25,21 +24,18 @@ func GetRateGrpc(userId uint) (result uint64, err error) {
 		return
 	}
 	defer conn.Close()
-
-	dexClient := dex.NewDexEventServiceClient(conn)
+	isCollectClient := iscollect.NewIsCollectServiceClient(conn)
 
 	// 1. userId를 이용해서 user의 수집률을 구하고 변수에 담는다
-	rate, err := dexClient.GetRate(context.Background(), &dex.RateRequest{
+	isCollect, err := isCollectClient.GetIsCollect(context.Background(), &iscollect.IsCollectRequest{
 		UserId: uint64(userId),
 	})
 	if err != nil {
 		return
 	}
-	// 2. 형변환
-	result, err = strconv.ParseUint(rate.Rate, 10, 64)
-	if err != nil {
-		return
-	}
+
+	result = isCollect.IsCollect
+
 	return
 }
 
