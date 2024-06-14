@@ -1,9 +1,10 @@
 package resource
 
-type locationResource struct {
-	Id         uint64 `json:"id"`
-	Name       string `json:"name"`
-	Age        int    `json:"age"`
-	Gender     string `json:"gender"`
-	MainDoctor string `json:"main_doctor"`
+type CalLocationResource struct {
+	Latitude  float64 `json:"latitude"`
+	Longitude float64 `json:"longitude"`
+	NorthLat  float64 `json:"northLat"`
+	SouthLat  float64 `json:"southLat"`
+	EastLon   float64 `json:"eastLon"`
+	WestLon   float64 `json:"westLon"`
 }
