@@ -24,6 +24,7 @@ func GetIsCollectGrpc(userId uint) (result bool, err error) {
 		return
 	}
 	defer conn.Close()
+
 	isCollectClient := iscollect.NewIsCollectServiceClient(conn)
 
 	// 1. userId를 이용해서 user의 수집률을 구하고 변수에 담는다
