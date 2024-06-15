@@ -33,15 +33,15 @@ func (s *locationService) FindEvent(userId uint, req *resource.FindEventRequest)
 		return
 	}
 
-	// 3. 사용자의 정보를 담아 수집 여부 조회 함수 호출
-	userlist, err := common.GetIsCollectGrpc(userId)
+	// 3. 사용자의 정보를 담아 수집 여부 조회 grpc함수 호출
+	userlist, err := common.GetIsCollectGrpc(point.EventId, userId)
 	if err != nil {
 		return
 	}
 
 	// 4. 가져온 데이터를 res에 담는다
 	res = &resource.FindEventResponse{
-		// EventId:   point.EventID,
+		EventId:   point.EventId,
 		Latitude:  point.Latitude,
 		Longitude: point.Longitude,
 		IsCollect: userlist,
