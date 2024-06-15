@@ -28,23 +28,20 @@ func (h *locationHandler) FindEvent(c *fiber.Ctx) error {
 	ctx := fiberkit.FiberKit{C: c}
 	req := new(resource.FindEventRequest)
 
-	err := ctx.C.BodyParser(req)
-	if err != nil {
-		return ctx.HttpFail(err.Error(), fiber.StatusNotFound)
-	}
+	ctx.C.BodyParser(req)
 
 	// 1. 쿼리파라미터에서 위도경도 받기
-	err = ctx.C.QueryParser(req)
+	err := ctx.C.QueryParser(req)
 	if err != nil {
 		return ctx.HttpFail(err.Error(), fiber.StatusNotFound)
 	}
 
 	// 2. middleware에서 user_id 받기
-	userId := uint(ctx.GetLocalsInt(common.LOCALS_USER_ID))
+	req.UserId = uint(ctx.GetLocalsUint(common.LOCALS_USER_ID))
 
-	// userId := uint(12)
+	// req.UserId = uint(8)
 	// 3. 서비스 함수 실행
-	res, err := h.service.FindEvent(userId, req)
+	res, err := h.service.FindEvent(req.UserId, req)
 	if err != nil {
 		return ctx.HttpFail(err.Error(), fiber.StatusNotFound)
 	}
