@@ -14,6 +14,10 @@ func (f *FiberKit) GetLocalsInt(key string) int {
 	return f.C.Locals(key).(int)
 }
 
+func (f *FiberKit) GetLocalsUint(key string) uint64 {
+	return f.C.Locals(key).(uint64)
+}
+
 func (f *FiberKit) HttpOK(data any) error {
 	return f.C.JSON(data)
 }
