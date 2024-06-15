@@ -41,9 +41,6 @@ func GetIsCollectGrpc(userId uint, eventId uint) (result bool, err error) {
 	return
 }
 
-// Radius of earth in KM
-const RadiusKm = 6371.01
-
 type Point struct {
 	Latitude  float64
 	Longitude float64

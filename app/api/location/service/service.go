@@ -3,6 +3,7 @@ package service
 import (
 	"main/app/api/common"
 	"main/app/api/location/resource"
+	com "main/constant/common"
 	"main/database/repository"
 )
 
@@ -25,7 +26,7 @@ func (s *locationService) FindEvent(userId uint, req *resource.FindEventRequest)
 	locationRepository := repository.NewRepository()
 
 	// 1. 사용자의 위도경도를 담아 최대최소위도경도 계산 함수 호출
-	MaxLatLon, MinLatLon := common.CalculateLatLonRange(req.Latitude, req.Longitude, common.RadiusKm)
+	MaxLatLon, MinLatLon := common.CalculateLatLonRange(req.Latitude, req.Longitude, com.RadiusKm)
 
 	// 2. 최대최소위도경도를 담아 범위 내의 event조회 repository함수 호출
 	point, err := locationRepository.FindEventByPoint(MaxLatLon, MinLatLon)
