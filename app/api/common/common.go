@@ -47,21 +47,23 @@ type Point struct {
 }
 
 // 위도경도 계산
-func CalculateLatLonRange(lat, lon, radiusKm float64) (Point, Point) {
+func CalculateLatLonRange(lat, lon, earthRadius float64) (Point, Point) {
 
-	// 위도 1도 당 km
-	latitudeKm := 1.0 / (radiusKm * (math.Pi / 180.0))
-	// 경도 1도 당 km
-	longitudeKm := 1.0 / ((radiusKm * (math.Pi / 180.0)) * math.Cos(lat*math.Pi/180.0))
+	// 조회에 필요한 실제 사용자 위치와 가까워지는 근사치 = 10m
+
+	// 위도 1도 당 km : (R * 2pi) / 360 = R * (pi / 180)
+	latitude10M := 0.01 / (earthRadius * (math.Pi / 180.0))
+	// 경도 1도 당 km : (R * 2pi) / 360 * cos(위도) = R * (pi / 180) * cos(위도)
+	longitude10M := 0.01 / ((earthRadius * (math.Pi / 180.0)) * math.Cos(lat*math.Pi/180.0))
 
 	// 북위도 (최대위도)
-	northLat := lat + latitudeKm
+	northLat := lat + latitude10M
 	// 남위도 (최소위도)
-	southLat := lat - latitudeKm
+	southLat := lat - latitude10M
 	// 동경도 (최대경도)
-	eastLon := lon + longitudeKm
+	eastLon := lon + longitude10M
 	// 서경도 (최소경도)
-	westLon := lon - longitudeKm
+	westLon := lon - longitude10M
 
 	return Point{northLat, eastLon}, Point{southLat, westLon}
 
