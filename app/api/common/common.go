@@ -46,8 +46,8 @@ type Point struct {
 	Longitude float64
 }
 
-// 위도경도 계산
-func CalculateLatLonRange(lat, lon, earthRadius float64) (Point, Point) {
+// 위도경도 계산(10m)
+func CalculateLatLonRange10(lat, lon, earthRadius float64) (Point, Point) {
 
 	// 조회에 필요한 실제 사용자 위치와 가까워지는 근사치 = 10m
 
@@ -64,6 +64,29 @@ func CalculateLatLonRange(lat, lon, earthRadius float64) (Point, Point) {
 	eastLon := lon + longitude10M
 	// 서경도 (최소경도)
 	westLon := lon - longitude10M
+
+	return Point{northLat, eastLon}, Point{southLat, westLon}
+
+}
+
+// 위도경도 계산(1000m)
+func CalculateLatLonRange1000(lat, lon, earthRadius float64) (Point, Point) {
+
+	// 조회에 필요한 실제 사용자 위치와 가까워지는 근사치 = 10m
+
+	// 위도 1도 당 km : (R * 2pi) / 360 = R * (pi / 180)
+	latitude1000M := 1 / (earthRadius * (math.Pi / 180.0))
+	// 경도 1도 당 km : (R * 2pi) / 360 * cos(위도) = R * (pi / 180) * cos(위도)
+	longitude1000M := 1 / (earthRadius * (math.Pi / 180.0)) * math.Cos(lat)
+
+	// 북위도 (최대위도)
+	northLat := lat + latitude1000M
+	// 남위도 (최소위도)
+	southLat := lat - latitude1000M
+	// 동경도 (최대경도)
+	eastLon := lon + longitude1000M
+	// 서경도 (최소경도)
+	westLon := lon - longitude1000M
 
 	return Point{northLat, eastLon}, Point{southLat, westLon}
 
