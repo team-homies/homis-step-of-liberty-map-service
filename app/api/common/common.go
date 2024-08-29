@@ -75,8 +75,10 @@ func CalculateLatLonRange1000(lat, lon, earthRadius float64) (Point, Point) {
 	// 조회에 필요한 실제 사용자 위치와 가까워지는 근사치 = 10m
 
 	// 위도 1도 당 km : (R * 2pi) / 360 = R * (pi / 180)
+	// 1000m의 거리에 필요한 위도 크기
 	latitude1000M := 1 / (earthRadius * (math.Pi / 180.0))
 	// 경도 1도 당 km : (R * 2pi) / 360 * cos(위도) = R * (pi / 180) * cos(위도)
+	// 1000m의 거리에 필요한 경도 크기
 	longitude1000M := 1 / (earthRadius * (math.Pi / 180.0)) * math.Cos(lat*(math.Pi/180.0))
 
 	// 북위도 (최대위도)
@@ -90,4 +92,18 @@ func CalculateLatLonRange1000(lat, lon, earthRadius float64) (Point, Point) {
 
 	return Point{northLat, eastLon}, Point{southLat, westLon}
 
+}
+
+// 두 포인트 사이의 거리 계산
+
+func CalculateDistance(lat1, lon1, lat2, lon2, earthRadius float64) (distance float64) {
+	gapLat := lat2 - lat1
+	gapLon := lon2 - lon1
+
+	distanceLat := math.Abs(gapLat) * earthRadius * (math.Pi / 180)
+	distanceLon := math.Abs(gapLon) * (earthRadius * (math.Pi / 180.0)) * math.Cos(lat1*(math.Pi/180.0))
+
+	distance = math.Sqrt(math.Pow(distanceLat, 2) + math.Pow(distanceLon, 2))
+
+	return
 }
