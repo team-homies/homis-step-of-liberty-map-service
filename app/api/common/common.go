@@ -54,7 +54,7 @@ func CalculateLatLonRange10(lat, lon, earthRadius float64) (Point, Point) {
 	// 위도 1도 당 km : (R * 2pi) / 360 = R * (pi / 180)
 	latitude10M := 0.01 / (earthRadius * (math.Pi / 180.0))
 	// 경도 1도 당 km : (R * 2pi) / 360 * cos(위도) = R * (pi / 180) * cos(위도)
-	longitude10M := 0.01 / (earthRadius * (math.Pi / 180.0)) * math.Cos(lat)
+	longitude10M := 0.01 / (earthRadius * (math.Pi / 180.0)) * math.Cos(lat*(math.Pi/180.0))
 
 	// 북위도 (최대위도)
 	northLat := lat + latitude10M
@@ -77,7 +77,7 @@ func CalculateLatLonRange1000(lat, lon, earthRadius float64) (Point, Point) {
 	// 위도 1도 당 km : (R * 2pi) / 360 = R * (pi / 180)
 	latitude1000M := 1 / (earthRadius * (math.Pi / 180.0))
 	// 경도 1도 당 km : (R * 2pi) / 360 * cos(위도) = R * (pi / 180) * cos(위도)
-	longitude1000M := 1 / (earthRadius * (math.Pi / 180.0)) * math.Cos(lat)
+	longitude1000M := 1 / (earthRadius * (math.Pi / 180.0)) * math.Cos(lat*(math.Pi/180.0))
 
 	// 북위도 (최대위도)
 	northLat := lat + latitude1000M
