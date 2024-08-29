@@ -14,7 +14,8 @@ func LocationPath() *core.InternalApi {
 	once.Do(func() {
 		instance = &core.InternalApi{
 			Location: core.LocationPath{
-				FindEvent: "/histories",
+				FindEvent:        "/histories",
+				FindLocationList: "/history",
 			},
 		}
 	})
