@@ -49,7 +49,7 @@ func (g *gormLocationRepository) FindLocationListByPoint(MaxLatLon, MinLatLon co
 	// 1. gorm 적용
 	err = g.db.Model(&entity.Map{}).Select("event_id", "Address", "AddressRoad", "latitude", "longitude").
 		Where("latitude BETWEEN ? AND ? AND longitude BETWEEN ? AND ?", MinLatLon.Latitude, MaxLatLon.Latitude, MinLatLon.Longitude, MaxLatLon.Longitude).
-		First(&res).Error
+		Find(&res).Error
 
 	if err != nil {
 		return
