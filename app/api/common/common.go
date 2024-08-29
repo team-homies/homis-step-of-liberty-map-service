@@ -52,18 +52,18 @@ func CalculateLatLonRange(lat, lon, earthRadius float64) (Point, Point) {
 	// 조회에 필요한 실제 사용자 위치와 가까워지는 근사치 = 10m
 
 	// 위도 1도 당 km : (R * 2pi) / 360 = R * (pi / 180)
-	latitude100M := 0.01 / (earthRadius * (math.Pi / 180.0))
+	latitude10M := 0.01 / (earthRadius * (math.Pi / 180.0))
 	// 경도 1도 당 km : (R * 2pi) / 360 * cos(위도) = R * (pi / 180) * cos(위도)
-	longitude100M := 0.01 / ((earthRadius * (math.Pi / 180.0)) * math.Cos(lat*math.Pi/180.0))
+	longitude10M := 0.01 / (earthRadius * (math.Pi / 180.0)) * math.Cos(lat)
 
 	// 북위도 (최대위도)
-	northLat := lat + latitude100M
+	northLat := lat + latitude10M
 	// 남위도 (최소위도)
-	southLat := lat - latitude100M
+	southLat := lat - latitude10M
 	// 동경도 (최대경도)
-	eastLon := lon + longitude100M
+	eastLon := lon + longitude10M
 	// 서경도 (최소경도)
-	westLon := lon - longitude100M
+	westLon := lon - longitude10M
 
 	return Point{northLat, eastLon}, Point{southLat, westLon}
 
