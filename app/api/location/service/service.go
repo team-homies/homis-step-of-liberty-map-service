@@ -80,7 +80,7 @@ func (s *locationService) FindLocationList(userId uint, req *resource.FindLocati
 			EventId:     info.EventId,
 			Latitude:    info.Latitude,
 			Longitude:   info.Longitude,
-			Distance:    uint(distance),
+			Distance:    distance,
 			Address:     info.Address,
 			AddressRoad: info.AddressRoad,
 			IsCollect:   isCollect,
