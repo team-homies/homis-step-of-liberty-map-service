@@ -96,19 +96,25 @@ func CalculateLatLonRange1000(lat, lon, earthRadius float64) (Point, Point) {
 }
 
 // 두 포인트 사이의 거리 계산
-
-func CalculateDistance(lat1, lon1, lat2, lon2, earthRadius float64) (distance string) {
+func CalculateDistance(lat1, lon1, lat2, lon2, earthRadius float64) (result string) {
+	// 위도차, 경도차
 	gapLat := lat2 - lat1
 	gapLon := lon2 - lon1
 
+	// 위도차 경도차에 따른 위도차거리, 경도차거리
 	distanceLat := math.Abs(gapLat) * earthRadius * (math.Pi / 180)
 	distanceLon := math.Abs(gapLon) * (earthRadius * (math.Pi / 180.0)) * math.Cos(lat1*(math.Pi/180.0))
-	km := (math.Sqrt(math.Pow(distanceLat, 2) + math.Pow(distanceLon, 2)))
+
+	// 두 지점 사이의 거리 (km)
+	km := math.Sqrt(math.Pow(distanceLat, 2) + math.Pow(distanceLon, 2))
+
+	// m로 변환 후 소수점 버리기
+	m := uint64(km / 1000)
 
 	if km == 0 {
-		distance = "here"
+		result = "here"
 	} else {
-		distance = strconv.FormatFloat(km, 'f', -1, 64)
+		result = strconv.FormatUint(m, 10)
 	}
 
 	return

@@ -81,6 +81,7 @@ func (s *locationService) FindLocationList(userId uint, req *resource.FindLocati
 			Latitude:    info.Latitude,
 			Longitude:   info.Longitude,
 			Distance:    distance,
+			Unit:        "M",
 			Address:     info.Address,
 			AddressRoad: info.AddressRoad,
 			IsCollect:   isCollect,
