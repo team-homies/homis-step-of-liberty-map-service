@@ -20,6 +20,7 @@ type FindLocationListResponse struct {
 	Latitude    float64 `json:"latitude"`
 	Longitude   float64 `json:"longitude"`
 	Distance    string  `json:"distance"`
+	Unit        string  `json::unit"`
 	Address     string  `json:"address"`
 	AddressRoad string  `json:"address_road"`
 	IsCollect   bool    `json:"is_collect"`
