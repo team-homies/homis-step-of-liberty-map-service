@@ -109,7 +109,7 @@ func CalculateDistance(lat1, lon1, lat2, lon2, earthRadius float64) (result stri
 	km := math.Sqrt(math.Pow(distanceLat, 2) + math.Pow(distanceLon, 2))
 
 	// m로 변환 후 소수점 버리기
-	m := uint64(km / 1000)
+	m := uint64(km * 1000)
 
 	if km == 0 {
 		result = "here"
