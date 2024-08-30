@@ -19,6 +19,7 @@ type FindLocationListResponse struct {
 	EventId     uint    `json:"event_id"`
 	Latitude    float64 `json:"latitude"`
 	Longitude   float64 `json:"longitude"`
+	Name        string  `json:"name"`
 	Distance    string  `json:"distance"`
 	Unit        string  `json:"unit"`
 	Address     string  `json:"address"`

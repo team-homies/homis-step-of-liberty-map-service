@@ -47,7 +47,7 @@ func (g *gormLocationRepository) FindLocationListByPoint(MaxLatLon, MinLatLon co
 	//  where  latitude BETWEEN 최소위도 AND 최대위도 AND longitude  BETWEEN 최소경도 AND 최대경도
 
 	// 1. gorm 적용
-	err = g.db.Model(&entity.Map{}).Select("event_id", "Address", "AddressRoad", "latitude", "longitude").
+	err = g.db.Model(&entity.Map{}).Select("event_id", "Address", "AddressRoad", "latitude", "longitude", "name").
 		Where("latitude BETWEEN ? AND ? AND longitude BETWEEN ? AND ?", MinLatLon.Latitude, MaxLatLon.Latitude, MinLatLon.Longitude, MaxLatLon.Longitude).
 		Find(&res).Error
 
