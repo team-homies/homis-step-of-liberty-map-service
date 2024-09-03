@@ -6,5 +6,6 @@ type InternalApi struct {
 }
 
 type LocationPath struct {
-	FindEvent string
+	FindEvent        string
+	FindLocationList string
 }

@@ -5,6 +5,7 @@ import (
 	"main/app/grpc/proto/iscollect"
 	"main/config"
 	"math"
+	"strconv"
 
 	"github.com/spf13/viper"
 	"google.golang.org/grpc"
@@ -46,15 +47,15 @@ type Point struct {
 	Longitude float64
 }
 
-// 위도경도 계산
-func CalculateLatLonRange(lat, lon, earthRadius float64) (Point, Point) {
+// 위도경도 계산(10m)
+func CalculateLatLonRange10(lat, lon, earthRadius float64) (Point, Point) {
 
 	// 조회에 필요한 실제 사용자 위치와 가까워지는 근사치 = 10m
 
 	// 위도 1도 당 km : (R * 2pi) / 360 = R * (pi / 180)
 	latitude10M := 0.01 / (earthRadius * (math.Pi / 180.0))
 	// 경도 1도 당 km : (R * 2pi) / 360 * cos(위도) = R * (pi / 180) * cos(위도)
-	longitude10M := 0.01 / (earthRadius * (math.Pi / 180.0)) * math.Cos(lat)
+	longitude10M := 0.01 / (earthRadius * (math.Pi / 180.0)) * math.Cos(lat*(math.Pi/180.0))
 
 	// 북위도 (최대위도)
 	northLat := lat + latitude10M
@@ -67,4 +68,54 @@ func CalculateLatLonRange(lat, lon, earthRadius float64) (Point, Point) {
 
 	return Point{northLat, eastLon}, Point{southLat, westLon}
 
+}
+
+// 위도경도 계산(1000m)
+func CalculateLatLonRange1000(lat, lon, earthRadius float64) (Point, Point) {
+
+	// 조회에 필요한 실제 사용자 위치와 가까워지는 근사치 = 10m
+
+	// 위도 1도 당 km : (R * 2pi) / 360 = R * (pi / 180)
+	// 1000m의 거리에 필요한 위도 크기
+	latitude1000M := 1 / (earthRadius * (math.Pi / 180.0))
+	// 경도 1도 당 km : (R * 2pi) / 360 * cos(위도) = R * (pi / 180) * cos(위도)
+	// 1000m의 거리에 필요한 경도 크기
+	longitude1000M := 1 / (earthRadius * (math.Pi / 180.0)) * math.Cos(lat*(math.Pi/180.0))
+
+	// 북위도 (최대위도)
+	northLat := lat + latitude1000M
+	// 남위도 (최소위도)
+	southLat := lat - latitude1000M
+	// 동경도 (최대경도)
+	eastLon := lon + longitude1000M
+	// 서경도 (최소경도)
+	westLon := lon - longitude1000M
+
+	return Point{northLat, eastLon}, Point{southLat, westLon}
+
+}
+
+// 두 포인트 사이의 거리 계산
+func CalculateDistance(lat1, lon1, lat2, lon2, earthRadius float64) (result string) {
+	// 위도차, 경도차
+	gapLat := lat2 - lat1
+	gapLon := lon2 - lon1
+
+	// 위도차 경도차에 따른 위도차거리, 경도차거리
+	distanceLat := math.Abs(gapLat) * earthRadius * (math.Pi / 180)
+	distanceLon := math.Abs(gapLon) * (earthRadius * (math.Pi / 180.0)) * math.Cos(lat1*(math.Pi/180.0))
+
+	// 두 지점 사이의 거리 (km)
+	km := math.Sqrt(math.Pow(distanceLat, 2) + math.Pow(distanceLon, 2))
+
+	// m로 변환 후 소수점 버리기
+	m := uint64(km * 1000)
+
+	if km == 0 {
+		result = "here"
+	} else {
+		result = strconv.FormatUint(m, 10)
+	}
+
+	return
 }
